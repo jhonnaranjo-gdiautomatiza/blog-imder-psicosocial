@@ -379,24 +379,108 @@ body {
   font-family: var(--font-display);
   font-size: 1.5rem;
   margin-top: 0.5rem;
+  color: var(--text-primary);
+}
+
+.callout-desc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-top: 0.35rem;
 }
 
 .grid-2-cols {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 1.5rem;
+  align-items: stretch;
 }
 
-.qa-block h3 {
-  font-size: 1.05rem;
+.qa-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.qa-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.qa-card-header {
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 0.85rem;
+}
+
+.qa-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   color: var(--brand-blue);
+  background: var(--bg-accent-soft);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-sm);
   margin-bottom: 0.6rem;
-  line-height: 1.35;
 }
 
-.qa-block p {
-  font-size: 0.95rem;
+.qa-card h3 {
+  font-size: 1.08rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--brand-navy);
+  line-height: 1.35;
+  min-height: 3rem;
+  display: flex;
+  align-items: center;
+}
+
+[data-theme="dark"] .qa-card h3 {
+  color: var(--brand-cyan);
+}
+
+.qa-intro {
+  font-size: 0.92rem;
   color: var(--text-secondary);
+  line-height: 1.55;
+  margin-bottom: 1rem;
+}
+
+.qa-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  flex-grow: 1;
+}
+
+.qa-list li {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.qa-list li .dot {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--brand-blue);
+  font-family: var(--font-display);
+  background: var(--bg-muted);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
 }
 
 /* Tabs Navigation for Entries */
