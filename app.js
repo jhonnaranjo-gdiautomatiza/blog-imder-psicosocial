@@ -48,91 +48,65 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 3. INTERACTIVE PODCAST PLAYER SIMULATION WITH WEB AUDIO API
+  // 3. REAL PODCAST AUDIO CONTROLLER
+  const podcastAudio = document.getElementById('podcastAudio');
   const audioToggle = document.getElementById('audioToggle');
   const audioProgress = document.getElementById('audioProgress');
   const audioTime = document.getElementById('audioTime');
+  const trackBar = document.getElementById('trackBar');
 
-  let isPlaying = false;
-  let playInterval = null;
-  let currentSeconds = 0;
-  const totalSeconds = 390; // 06:30 mins
-
-  // Web Audio Synth for ambient demo chime
-  let audioCtx = null;
-  let oscillator = null;
-  let gainNode = null;
-
-  function initAudioTone() {
-    try {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (AudioContext) {
-        audioCtx = new AudioContext();
-      }
-    } catch (e) {
-      console.log('Web Audio not supported');
-    }
-  }
-
-  function playSoftChime() {
-    if (!audioCtx) initAudioTone();
-    if (!audioCtx) return;
-    
-    if (audioCtx.state === 'suspended') {
-      audioCtx.resume();
+  if (podcastAudio && audioToggle) {
+    function formatTime(sec) {
+      if (isNaN(sec) || !isFinite(sec)) return "00:00";
+      const m = Math.floor(sec / 60).toString().padStart(2, '0');
+      const s = Math.floor(sec % 60).toString().padStart(2, '0');
+      return `${m}:${s}`;
     }
 
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(440, audioCtx.currentTime); // A4
-    osc.frequency.exponentialRampToValueAtTime(554.37, audioCtx.currentTime + 0.3); // C#5
-    osc.frequency.exponentialRampToValueAtTime(659.25, audioCtx.currentTime + 0.6); // E5
+    podcastAudio.addEventListener('loadedmetadata', () => {
+      audioTime.textContent = `00:00 / ${formatTime(podcastAudio.duration)}`;
+    });
 
-    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2);
+    podcastAudio.addEventListener('timeupdate', () => {
+      const cur = podcastAudio.currentTime;
+      const dur = podcastAudio.duration || 184;
+      const pct = (cur / dur) * 100;
+      audioProgress.style.width = `${pct}%`;
+      audioTime.textContent = `${formatTime(cur)} / ${formatTime(dur)}`;
+    });
 
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + 1.2);
-  }
+    podcastAudio.addEventListener('ended', () => {
+      audioToggle.textContent = '▶ Escuchar Podcast';
+      audioToggle.style.background = '';
+      audioProgress.style.width = '0%';
+    });
 
-  function formatTime(sec) {
-    const m = Math.floor(sec / 60).toString().padStart(2, '0');
-    const s = Math.floor(sec % 60).toString().padStart(2, '0');
-    return `${m}:${s}`;
-  }
-
-  if (audioToggle) {
     audioToggle.addEventListener('click', () => {
-      isPlaying = !isPlaying;
-
-      if (isPlaying) {
-        audioToggle.textContent = '⏸ Pausar Demo';
-        audioToggle.style.background = '#059669';
-        playSoftChime();
-
-        playInterval = setInterval(() => {
-          currentSeconds += 1;
-          if (currentSeconds > totalSeconds) {
-            currentSeconds = 0;
-            isPlaying = false;
-            clearInterval(playInterval);
-            audioToggle.textContent = '▶ Reproducir Demo';
-            audioToggle.style.background = '';
-          }
-          const pct = (currentSeconds / totalSeconds) * 100;
-          audioProgress.style.width = `${pct}%`;
-          audioTime.textContent = `${formatTime(currentSeconds)} / 06:30`;
-        }, 1000);
+      if (podcastAudio.paused) {
+        podcastAudio.play().then(() => {
+          audioToggle.textContent = '⏸ Pausar Podcast';
+          audioToggle.style.background = '#059669';
+        }).catch(err => {
+          console.error("Audio playback error:", err);
+        });
       } else {
+        podcastAudio.pause();
         audioToggle.textContent = '▶ Continuar';
         audioToggle.style.background = '';
-        clearInterval(playInterval);
       }
     });
+
+    if (trackBar) {
+      trackBar.style.cursor = 'pointer';
+      trackBar.addEventListener('click', (e) => {
+        const rect = trackBar.getBoundingClientRect();
+        const pos = (e.clientX - rect.left) / rect.width;
+        if (podcastAudio.duration) {
+          podcastAudio.currentTime = pos * podcastAudio.duration;
+        }
+      });
+    }
   }
 
-  console.log('Mente en Juego: Blog interactivo de intervención psicosocial inicializado con éxito.');
+  console.log('Mente en Juego: Blog interactivo y reproductor de audio inicializados con éxito.');
 });

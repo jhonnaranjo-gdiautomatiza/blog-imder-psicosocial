@@ -507,20 +507,25 @@
             <li><strong>Círculo de Reconocimiento y Apoyo Mutuo (Semana 6):</strong> Espacio de contención afectiva facilitado por Trabajo Social para compartir estrategias de resiliencia rural y celebrar las buenas prácticas docentes.</li>
           </ul>
 
-          <!-- PODCAST INTERACTIVE PLAYER MOCKUP -->
+          <!-- PODCAST INTERACTIVE PLAYER REAL AUDIO -->
           <div class="podcast-box">
-            <div class="podcast-badge">🎧 Recurso Asincrónico Destacado · Episodio Piloto</div>
+            <div class="podcast-badge">🎧 Recurso Asincrónico Destacado · Episodio Piloto (Audio Real Narrado)</div>
             <div class="podcast-player">
               <div class="podcast-cover">
                 <span class="podcast-icon">📻</span>
               </div>
               <div class="podcast-info">
                 <h4>Podcast "Pausa & Juego: Bienestar en el Territorio"</h4>
-                <p>Episodio 1: Cuando el Silbato se Apaga: Desconexión y Bienestar Docente (Duración: 06:30 min)</p>
+                <p>Episodio 1: Cuando el Silbato se Apaga: Desconexión y Bienestar Docente (Duración: 03:04 min · Audio Real en Español)</p>
+                <audio id="podcastAudio" src="podcast_episodio_1.mp3" preload="metadata"></audio>
                 <div class="audio-control-bar">
-                  <button class="play-btn" id="audioToggle">▶ Reproducir Demo</button>
-                  <div class="track-bar"><div class="track-progress" id="audioProgress"></div></div>
-                  <span class="time-display" id="audioTime">00:00 / 06:30</span>
+                  <button class="play-btn" id="audioToggle">▶ Escuchar Podcast</button>
+                  <div class="track-bar" id="trackBar"><div class="track-progress" id="audioProgress"></div></div>
+                  <span class="time-display" id="audioTime">00:00 / 03:04</span>
+                </div>
+                <!-- Reproductor Nativo Adicional para Compatibilidad Total -->
+                <div style="margin-top: 0.85rem;">
+                  <audio controls src="podcast_episodio_1.mp3" style="width: 100%; height: 38px; border-radius: 6px; outline: none;"></audio>
                 </div>
               </div>
             </div>
